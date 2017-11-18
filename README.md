@@ -4,21 +4,44 @@ Random variates in js. Includes cdf, idf, and pdf. Also a website for visually d
 # Quick Usage Guide 
 ```js
 import "jsrvms" 
+// Generste a random variate
+// See the wiki for a list of variates 
 
-// Seeding the random number generator
-JsRVMS.setSeed{123456789}
+JsRVMS.Bernoulli(0.2) // [0, 1]
 
-// Select a stream (default is 0)
-JsRVMS.
+// The i.d.f and variate functions are the same.
+// u is an optional, last parameter of any variate
 
-// Generste a random variate (idf) 
-JsRVMS.Geometric(0.2)
+JsRBMS.Bernoulli(.5, .6) // 1
 
-// Apply transformations
-JsRVMS.Bound(0,3).Geometric(0.2)
+// Seeding the random number generator for 
+// deterministic behavior
 
-// Use cdf
-JsRVMS.cdf.Geometric(0.2,1)
+JsRVMS.setSeed(123456789)
+
+// For non-deterministic you can set the seed using the clock
+
+JsRVMS.setSeed(Date.now())
+
+// or 
+
+JsRVMS.setSeed(-1)
+
+// Select an RNG stream (default is 0)
+
+JsRVMS.setStream(51)
+
+// The previous two commands can be chained
+
+JsRVMS.setSeed(-1).setStream(51)
+
+// The c.d.f's are provided and have their own forms
+
+JsRVMS.cdf.Geometric(0.2, 1)
+
+// The p.d.f's also are provided
+
+JsRVMS.pdf.Geometric(0.2, 1)
 
 // To use a custom base random number generator
 // just override JsRVMS.Random
