@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Khauri/JsRVMS/issues"
   },
-  "homepage": "https://github.com/Khauri/JsRVMS#readme"
+  "homepage": "https://github.com/Khauri/JsRVMS#readme",
+  "devDependencies": {
+    "webpack": "^3.8.1"
+  }
 }

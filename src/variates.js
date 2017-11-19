@@ -38,38 +38,81 @@
  */
 
 module.exports = function($){
+    const TINY = 1e-10
     // TODO: Test
     // Will this create significant overhead?
-    // let random = ()=>$.random();
-    let random = $.random;
+    // let random = ()=>$.random()
+    let random = $.random
+    
+    const {exp, abs, floor, log} = Math
 
     // Continuous
-    $.Uniform = function(u = random()){
-        return (a + (b - a) * u);
+    $.Uniform = function(a, b, u = random()){
+        return (a + (b - a) * u)
     }
 
     $.Exponential = function(m, u = random()){
-
+        return (-m * log(1.0 - u))
     }
 
-    $.Erlang = function(n, b = random()){
-
+    $.Erlang = function(n, b, u = random()){
+        let t = 0.0,
+            x = n * b
+        do 
+        {                                   /* use Newton-Raphson iteration */
+            t = x
+            x = t + (u - $.cdf.Erlang(n, b, t)) / $.pdf.Erlang(n, b, t)
+            if (x <= 0.0)
+                x = 0.5 * t
+        }
+        while (abs(x - t) >= TINY)
+        return x
+    }
+    // This has to be before Normal, LogNormal
+    $.Standard = function(u = random()){
+        let t = 0.0, 
+            x = 0.0                    /* initialize to the mean, then  */
+        do 
+        {                            /* use Newton-Raphson iteration  */
+            t = x
+            x = t + (u - $.cdf.Standard(t)) / $.pdf.Standard(t)
+        } 
+        while (abs(x - t) >= TINY)
+        return x
     }
 
     $.Normal = function(m, s, u = random()){
-
+        return (m + s * $.Standard(u))
     }
 
     $.Lognormal = function(a, b, u = random()){
-
+        return exp(a + b * $.Standard(u))
     }
 
     $.Chisquare = function(n, u = random()){
-
+        let t = 0.0, 
+            x = n
+        do 
+        {                                     /* use Newton-Raphson iteration */
+            t = x
+            x = t + (u - $.cdf.Chisquare(n, t)) / $.pdf.Chisquare(n, t)
+            if (x <= 0.0)
+                x = 0.5 * t
+        } 
+        while (abs(x - t) >= TINY)
+        return x
     }
 
     $.Student = function(n, u = random()){
-
+        let t = 0.0, 
+            x = 0.0                       /* initialize to the mean, then */
+        do
+        {                                     /* use Newton-Raphson iteration */
+            t = x
+            x = t + (u - $.cdf.Student(n, t)) / $.pdf.Student(n, t)
+        } 
+        while (abs(x - t) >= TINY)
+        return x
     }
 
     // Discrete
@@ -78,34 +121,84 @@ module.exports = function($){
     }
 
     $.Binomial = function(n, p, u = random()){
-        let x = Math.floor(n * p);
-        if($.cdf.Binomial(n, p, x) <= u){
-            do{
+        let x = floor(n * p)
+        if($.cdf.Binomial(n, p, x) <= u)
+        {
+            do
+            {
                 x++
-            }while($.cdf.Binomial(n, p, x) <= u)
+            }
+            while($.cdf.Binomial(n, p, x) <= u)
         }
-        else if ($.cdf.Binomial(n, p, 0) <= u){
+        else if ($.cdf.Binomial(n, p, 0) <= u)
+        {
             while($.cdf.Binomial(n, p, x - 1) > u)
-                x--;
+            {
+                x--
+            }
         }
         else
-            x = 0;
-        return x;
+        {
+            x = 0
+        }
+        return x
     }
 
     $.Equilikely = function(a, b, u = random()){
-        return (a + Math.floor(u * (b - a + 1)));
+        return (a + floor(u * (b - a + 1)))
     }
 
     $.Geometric = function(p, u = random()){
-        return Math.floor((Math.log(1.0 - u) / Math.log(p)));
+        return floor((log(1.0 - u) / log(p)))
     }
 
     $.Pascal = function(n, p, u = random()){
-
+        let x = floor(n * p / (1.0 - p))    /* start searching at the mean */
+        
+        if ($.cdf.Pascal(n, p, x) <= u)
+        {
+            do
+            {
+                x++
+            }
+            while ($.cdf.Pascal(n, p, x) <= u)
+        }
+        else if ($.cdf.Pascal(n, p, 0) <= u)
+        {
+            while ($.cdf.Pascal(n, p, x - 1) > u)
+            {
+                x--
+            }    
+        }
+        else
+        {
+            x = 0
+        }
+        return x
     }
 
     $.Poisson = function(m, u = random()){
-
+        let x = floor(m)                  /* start searching at the mean */
+        
+        if ($.cdf.Poisson(m, x) <= u)
+        {
+            do
+            {
+                x++
+            }
+            while ($.cdf.Poisson(m, x) <= u)
+        }
+        else if ($.cdf.Poisson(m, 0) <= u)
+        {
+            while ($.cdf.Poisson(m, x - 1) > u)
+            {
+                x--
+            }
+        }
+        else
+        {
+            x = 0
+        }
+        return x
     }
 }
