@@ -1,0 +1,27 @@
+{
+  "name": "jsrvms-variates",
+  "version": "1.0.0",
+  "description": "Random variates in js. Includes cdf, idf, and pdf. Also a website for visually displaying them using vue.js and d3.js",
+  "main": "index.js",
+  "dependencies": {
+    "chart.js": "^2.7.1",
+    "vue": "^2.5.6",
+    "webpack": "^3.8.1"
+  },
+  "devDependencies": {
+    "webpack": "^3.8.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Khauri/JsRVMS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Khauri/JsRVMS/issues"
+  },
+  "homepage": "https://github.com/Khauri/JsRVMS#readme"
+}
