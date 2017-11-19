@@ -4,6 +4,7 @@
   "description": "A Javascript random number variates generator",
   "main": "index.js",
   "scripts": {
+    "build" : "",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
