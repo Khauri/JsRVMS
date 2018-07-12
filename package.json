@@ -1,0 +1,23 @@
+{
+  "name": "jsrvms",
+  "version": "1.0.0",
+  "description": "A Javascript random number variates generator",
+  "main": "index.js",
+  "scripts": {
+    "build" : "",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Khauri/JsRVMS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Khauri/JsRVMS/issues"
+  },
+  "homepage": "https://github.com/Khauri/JsRVMS#readme",
+  "devDependencies": {
+    "webpack": "^3.8.1"
+  }
+}
